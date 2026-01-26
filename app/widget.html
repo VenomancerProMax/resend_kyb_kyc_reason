@@ -24,8 +24,16 @@
         <div class="button-container">
           <button class="btn btn-resend">Re-Send</button>
         </div>
-      </form>
 
+         <div class="popup-overlay hidden" id="popup">
+            <div class="popup-content">
+              <h3 id="popupTitle">Action Status</h3>
+              <p id="popupMessage">Default message</p>
+              <button class="close-button" onclick="hidePopup()">Ok</button>
+            </div>
+        </div>
+
+      </form>
     </div>
 
     <script src="js/app.js"></script>
