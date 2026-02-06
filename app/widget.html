@@ -3,36 +3,52 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbededAppSDK.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" href="css/style.css">
   </head>
-  <body>
-    <div id="loader-overlay" class="loader-overlay">
-      <div class="spinner"></div>
-      <p>Processing...</p>
+  <body class="bg-slate-50 text-gray-800 antialiased font-sans flex items-start justify-center p-4">
+    <div id="loader-overlay" class="fixed inset-0 bg-white/95 z-[999] hidden flex-col items-center justify-center backdrop-blur-md">
+      <div class="relative flex items-center justify-center">
+        <div class="absolute w-20 h-20 border-4 border-blue-500/20 rounded-full"></div>
+        <div class="w-20 h-20 border-4 border-transparent border-t-blue-600 rounded-full animate-spin"></div>
+        <div class="absolute w-12 h-12 bg-blue-50 rounded-full animate-pulse flex items-center justify-center">
+            <svg class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+        </div>
+      </div>
+      <div class="mt-8 text-center">
+        <p id="loader-text" class="text-base font-bold text-slate-800 tracking-tight">Resending Form...</p>
+        <p class="text-sm text-slate-500 mt-1">Please wait a moment while we process this.</p>
+      </div>
     </div>
 
-    <div class="container">
+    <div class="w-full max-w-[500px] bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+      <div class="p-4 border-b border-slate-100 bg-slate-50/50 text-center">
+        <h1 id="main-title" class="text-lg font-bold text-slate-900 uppercase tracking-tight">Resending Form</h1>
+      </div>
       
-      <form id="record-form" novalidate>
-        <div class="form-group">
-          <label class="field-label" for="reason">Reason for resending</label>
-          <input id="reason" class="reason-input" placeholder="Please provide a reason..." />
-          <span id="reason-error" class="error-msg"></span>
+      <form id="record-form" class="p-5" novalidate>
+        <div class="mb-4">
+          <label class="block text-sm font-semibold text-slate-700 mb-2" for="reason">Reason for resending</label>
+          <textarea id="reason" rows="3" class="w-full px-4 py-3 text-sm border border-slate-300 rounded-lg focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none transition-all resize-none shadow-sm" placeholder="Please provide a reason..."></textarea>
+          <span id="reason-error" class="text-red-600 text-xs mt-2 font-medium hidden block"></span>
         </div>
 
-        <div class="button-container">
-          <button class="btn btn-resend">Re-Send</button>
+        <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
+          <button type="button" onclick="ZOHO.CRM.UI.Popup.close()" class="px-5 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-md transition-colors">Cancel</button>
+          <button type="submit" class="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm font-bold py-2 px-6 rounded-md transition-all shadow-md shadow-blue-100">Re-Send</button>
         </div>
 
-         <div class="popup-overlay hidden" id="popup">
-            <div class="popup-content">
-              <h3 id="popupTitle">Action Status</h3>
-              <p id="popupMessage">Default message</p>
-              <button class="close-button" onclick="hidePopup()">Ok</button>
-            </div>
+        <div class="fixed inset-0 bg-slate-900/60 z-[1000] hidden flex items-center justify-center p-4 backdrop-blur-sm" id="popup">
+          <div class="bg-white rounded-xl p-6 text-center shadow-2xl w-full max-w-[320px] border border-slate-100">
+            <div id="statusIcon" class="mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4"></div>
+            <h3 id="popupTitle" class="text-lg font-bold text-slate-900 mb-2">Notification</h3>
+            <p id="popupMessage" class="text-sm text-slate-500 leading-relaxed mb-6"></p>
+            <button type="button" class="w-full text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors" id="closeBtn" onclick="hidePopup()">Close</button>
+          </div>
         </div>
-
       </form>
     </div>
 
